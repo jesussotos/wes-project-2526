@@ -3,6 +3,7 @@ import Orders, { Order } from '@/models/Order'
 import connect from '@/lib/mongoose'
 import { Types } from 'mongoose'
 import Users, { User } from '@/models/User'
+import bcrypt from 'bcrypt'
 
 
 const ProductProjection = {
@@ -69,14 +70,17 @@ export async function createUser(user: {
     return null
   }
 
-  const doc: User = {
-    ...user,
-    birthdate: new Date(user.birthdate),
-    cartItems: [],
-    orders: [],
-  }
+const hash = await bcrypt.hash(user.password, 10)
+const doc: User = {
+  ...user,
+  password: hash,
+  birthdate: new Date(user.birthdate),
+  cartItems: [],
+  orders: [],
+}
 
-  const newUser = await Users.create(doc)
+const newUser = await Users.create(doc)
+
 
   return {
     _id: newUser._id,
@@ -228,6 +232,7 @@ export async function getOrderId(
   const response = await Orders.findOne({
     _id: { $eq: orderId, $in: user.orders },
   })
+
     .select({ __v: false })
     .populate({
       path: 'orderitems.product',
@@ -319,4 +324,27 @@ export async function putProduct(
 
   return {_id:userCart,encontrado:encontrado}
 
+}
+
+export interface CheckCredentialsResponse {
+  _id: Types.ObjectId
+}
+
+export async function checkCredentials(
+  email: string,
+  password: string
+): Promise<CheckCredentialsResponse | null> {
+  await connect()
+
+  const user = await Users.findOne({email:email})
+
+  if (!user){
+    return null
+  }
+
+  const match = await bcrypt.compare(password, user.password)
+  if(!match){
+    return null
+  }
+  return { _id: user.id}
 }
