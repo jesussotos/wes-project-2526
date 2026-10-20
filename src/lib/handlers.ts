@@ -269,8 +269,11 @@ export async function createOrder(userId, order: {
 
   const newOrder = await Orders.create(doc)
   const user = await Users.findById(userId)
-  user?.orders.push(newOrder)
-  user?.save()
+  if (user) {
+    user.orders.push(newOrder._id)
+    user.cartItems = []
+    await user.save()
+  }
 
   return {
     _id: newOrder._id,
