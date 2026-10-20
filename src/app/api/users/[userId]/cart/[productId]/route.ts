@@ -9,6 +9,18 @@ export async function DELETE(
  request: NextRequest,
  { params }: { params: { userId: string, productId: string }}
 ): Promise<NextResponse<DeleteCartUserResponse> | NextResponse<ErrorResponse>> {
+
+ const session = await getSession()
+ if (!session?.userId) {
+  return NextResponse.json(
+    {
+      error: 'NOT_AUTHENTICATED',
+      message: 'Authentication required.',
+    },
+    { status: 401 }
+  )
+}
+
   if (!Types.ObjectId.isValid(params.userId)) {
     return NextResponse.json(
       {
@@ -18,6 +30,17 @@ export async function DELETE(
       { status: 400 }
     )
   }
+
+if (session.userId.toString() !== params.userId) {
+  return NextResponse.json(
+    {
+      error: 'NOT_AUTHORIZED',
+      message: 'Unauthorized access.',
+    },
+    { status: 403 }
+  )
+}
+
   if (!Types.ObjectId.isValid(params.productId)) {
     return NextResponse.json(
       {
