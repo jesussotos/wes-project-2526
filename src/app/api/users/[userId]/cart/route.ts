@@ -2,11 +2,22 @@ import { Types } from 'mongoose'
 import{getCartUser, getUser, GetUserResponse, GetCartUserResponse} from '@/lib/handlers'
 import { NextRequest, NextResponse } from 'next/server'
 import { ErrorResponse } from '@/lib/handlers'
+import { getSession } from '@/lib/auth'
 
 export async function GET(
  request: NextRequest,
  { params }: { params: { userId: string } }
 ): Promise<NextResponse<GetCartUserResponse> | NextResponse<ErrorResponse>> {
+   const session = await getSession()
+   if (!session?.userId) {
+    return NextResponse.json(
+      {
+        error: 'NOT_AUTHENTICATED',
+        message: 'Authentication required.',
+      },
+      { status: 401 }
+    )
+  }
   if (!Types.ObjectId.isValid(params.userId)) {
     return NextResponse.json(
       {
@@ -16,6 +27,16 @@ export async function GET(
       { status: 400 }
     )
   }
+
+  if (session.userId.toString() !== params.userId) {
+  return NextResponse.json(
+    {
+      error: 'NOT_AUTHORIZED',
+      message: 'Unauthorized access.',
+    },
+    { status: 403 }
+  )
+}
 
   const user = await getUser(params.userId)
 
