@@ -41,7 +41,8 @@ export async function POST(
   if (
     !body.address ||
     !body.cardHolder ||
-    !body.cardNumber 
+    !body.cardNumber ||
+    !Types.ObjectId.isValid(params.userId)
   ) {
     return NextResponse.json(
       {
@@ -51,6 +52,7 @@ export async function POST(
       { status: 400 }
     )
   }
+
 
   const user = await getUser(params.userId)
 
