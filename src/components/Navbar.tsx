@@ -11,25 +11,25 @@ export default async function Navbar() {
   const session = await getSession()
 
   return (
-    <nav className='fixed top-0 z-50 w-full bg-gray-800 bg-opacity-90 backdrop-blur-lg backdrop-filter'>
+    <nav className='fixed top-0 z-50 w-full border-b border-[#e8d9c5] bg-[#fffaf3]/95 text-[#3d3028] shadow-sm backdrop-blur-lg backdrop-filter'>
       <div className='mx-auto max-w-7xl px-6 sm:px-8 lg:px-10'>
-        <div className='relative flex h-16 items-center justify-between'>
-          <div className='flex flex-1 items-stretch justify-start'>
+        <div className='flex h-20 items-center justify-between'>
+          <div className='flex items-center'>
             <Link
-              className='flex flex-shrink-0 items-center space-x-4 text-gray-300 hover:text-gray-100'
+              className='flex flex-shrink-0 items-center gap-3 text-[#3d3028] transition-colors hover:text-[#a14d32]'
               href='/'
             >
               <img
-                className='block h-8 w-auto'
-                src='/img/logo.svg'
-                alt='GameShop logo'
+                className='block h-14 w-auto'
+                src='/img/logo.png'
+                alt='DuViSo Books logo'
               />
-              <div className='inline-block w-auto text-xl font-semibold'>
-                GameShop
+              <div className='font-serif text-2xl font-bold tracking-tight'>
+                DuViSo <span className='font-normal text-[#a14d32]'>Books</span>
               </div>
             </Link>
           </div>
-          <div className='absolute inset-y-0 right-0 flex items-center space-x-4'>
+          <div className='flex items-center gap-2 sm:gap-4'>
             {session ? (
               <>
                 <NavbarButton href='/cart'>
@@ -52,13 +52,13 @@ export default async function Navbar() {
               <>
                 <Link
                   href='/auth/signup'
-                  className='rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-gray-100'
+                  className='hidden rounded-full px-3 py-2 text-sm font-medium text-[#6d584a] transition-colors hover:bg-[#f2e7d8] hover:text-[#a14d32] sm:block'
                 >
-                  Sign up
+                  Create account
                 </Link>
                 <Link
                   href='/auth/signin'
-                  className='rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-gray-100'
+                  className='rounded-full bg-[#a14d32] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#873d27]'
                 >
                   Sign in
                 </Link>
