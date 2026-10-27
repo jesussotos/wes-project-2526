@@ -4,7 +4,8 @@ import Link from 'next/link'
 import { getSession } from '@/lib/auth'
 import { Product } from '@/models/Product'
 import { Types } from 'mongoose'
-import { MinusIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline'
+import { TrashIcon } from '@heroicons/react/24/outline'
+import CartControlCant from '@/app/components/ControlMasMenosCart'
 
 interface CartItemPopulated {
   product: Product & { _id: Types.ObjectId }
@@ -71,26 +72,8 @@ export default async function Cart() {
                     <span className='text-xs text-[#6d584a]'>
                       {'Per unit: ' + cartItem.product.price.toFixed(2) + ' €'}
                     </span>
-                    <div className='mt-1 flex items-center gap-1'>
-                      <button
-                        type='button'
-                        className='rounded-md border border-[#e8d9c5] p-1 text-[#6d584a] transition-colors hover:bg-[#f2e7d8] 
-                        hover:text-[#a14d32]'
-                      >
-                        <span className='sr-only'>Remove one item</span>
-                        <MinusIcon className='h-4 w-4' aria-hidden='true' />
-                      </button>
-                      <span className='w-8 text-center text-sm text-[#3d3028]'>
-                        {cartItem.qty}
-                      </span>
-                      <button
-                        type='button'
-                        className='rounded-md border border-[#e8d9c5] p-1 text-[#6d584a] transition-colors hover:bg-[#f2e7d8] 
-                        hover:text-[#a14d32]'
-                      >
-                        <span className='sr-only'>Add one item</span>
-                        <PlusIcon className='h-4 w-4' aria-hidden='true' />
-                      </button>
+                    <div className='flex items-center gap-1'>
+                      <CartControlCant inicial={cartItem.qty} />
                       <button
                         type='button'
                         className='ml-1 rounded-md bg-red-100 p-1 text-red-600 transition-colors hover:bg-red-200'
