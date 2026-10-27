@@ -216,7 +216,7 @@ const response = await userCart.populate<{cartItems:{product:Product, qty:number
 
 export interface GetOrderIdResponse extends Omit<Order, 'orderitems'> {
   _id: Types.ObjectId
-  orderItems: (Omit<Order['orderitems'][number], 'product'> & {
+  orderitems: (Omit<Order['orderitems'][number], 'product'> & {
     product: Product & { _id: Types.ObjectId }
   })[]
 }
@@ -227,8 +227,10 @@ export async function getOrderId(
   await connect()
 
   const user = await Users.findById(userId, { orders: true })
+  if (!user) {
+    return null
+  }
 
-  
   const response = await Orders.findOne({
     _id: { $eq: orderId, $in: user.orders },
   })
@@ -244,7 +246,7 @@ export async function getOrderId(
     return null
   }
 
-  return response
+  return response as unknown as GetOrderIdResponse
 }
 
 
