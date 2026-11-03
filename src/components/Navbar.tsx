@@ -20,7 +20,7 @@ export default async function Navbar() {
               href='/'
             >
               <img
-                className='block h-14 w-auto'
+                className='block h-6 w-auto'
                 src='/img/logo.png'
                 alt='DuViSo Books logo'
               />
@@ -50,12 +50,7 @@ export default async function Navbar() {
               </>
             ) : (
               <>
-                <Link
-                  href='/auth/signup'
-                  className='hidden rounded-full px-3 py-2 text-sm font-medium text-[#6d584a] transition-colors hover:bg-[#f2e7d8] hover:text-[#a14d32] sm:block'
-                >
-                  Create account
-                </Link>
+                
                 <Link
                   href='/auth/signin'
                   className='rounded-full bg-[#a14d32] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#873d27]'
