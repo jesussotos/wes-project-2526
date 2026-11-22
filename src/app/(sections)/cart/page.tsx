@@ -73,7 +73,11 @@ export default async function Cart() {
                       {'Per unit: ' + cartItem.product.price.toFixed(2) + ' €'}
                     </span>
                     <div className='flex items-center gap-1'>
-                      <CartControlCant inicial={cartItem.qty} />
+                        <CartControlCant
+                          userId={session.userId}
+                          productId={cartItem.product._id.toString()}
+                          value={cartItem.qty}
+                        />
                       <button
                         type='button'
                         className='ml-1 rounded-md bg-red-100 p-1 text-red-600 transition-colors hover:bg-red-200'

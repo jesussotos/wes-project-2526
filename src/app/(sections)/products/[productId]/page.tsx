@@ -3,8 +3,9 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getCartUser, getProduct } from '@/lib/handlers'
 import { getSession } from '@/lib/auth'
-import { MinusIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline'
+import { TrashIcon } from '@heroicons/react/24/outline'
 import { Product as ProductModel } from '@/models/Product'
+import CartControlCant from '@/app/components/ControlMasMenosCart'
 
 interface CartItemPopulated {
   product: ProductModel & { _id: Types.ObjectId }
@@ -84,23 +85,11 @@ export default async function Product({
                 In your cart
               </p>
               <div className='flex items-center gap-2'>
-                <button
-                  type='button'
-                  aria-label='Remove one item'
-                  className='rounded-md border border-[#e8d9c5] p-2 text-[#6d584a] transition-colors hover:bg-[#f2e7d8] hover:text-[#a14d32]'
-                >
-                  <MinusIcon className='h-5 w-5' aria-hidden='true' />
-                </button>
-                <span className='min-w-10 text-center text-base font-semibold text-[#3d3028]'>
-                  {quantity}
-                </span>
-                <button
-                  type='button'
-                  aria-label='Add one item'
-                  className='rounded-md border border-[#e8d9c5] p-2 text-[#6d584a] transition-colors hover:bg-[#f2e7d8] hover:text-[#a14d32]'
-                >
-                  <PlusIcon className='h-5 w-5' aria-hidden='true' />
-                </button>
+                <CartControlCant
+                  userId={session.userId}
+                  productId={params.productId}
+                  value={quantity}
+                />
                 <button
                   type='button'
                   aria-label='Remove product from cart'
@@ -109,9 +98,6 @@ export default async function Product({
                   <TrashIcon className='h-5 w-5' aria-hidden='true' />
                 </button>
               </div>
-              <p className='mt-3 text-xs text-[#8b7565]'>
-                Cart controls are shown for preview only in this practice.
-              </p>
             </div>
           )}
         </div>
