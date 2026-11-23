@@ -5,7 +5,7 @@ import { getSession } from '@/lib/auth'
 import { Product } from '@/models/Product'
 import { Types } from 'mongoose'
 import { TrashIcon } from '@heroicons/react/24/outline'
-import CartControlCant from '@/app/components/ControlMasMenosCart'
+import CartItemCounter from '@/components/CartItemCounter'
 
 interface CartItemPopulated {
   product: Product & { _id: Types.ObjectId }
@@ -73,7 +73,11 @@ export default async function Cart() {
                       {'Per unit: ' + cartItem.product.price.toFixed(2) + ' €'}
                     </span>
                     <div className='flex items-center gap-1'>
-                      <CartControlCant inicial={cartItem.qty} />
+                      <CartItemCounter
+                        userId={session.userId}
+                        productId={cartItem.product._id.toString()}
+                        value={cartItem.qty}
+                      />
                       <button
                         type='button'
                         className='ml-1 rounded-md bg-red-100 p-1 text-red-600 transition-colors hover:bg-red-200'
